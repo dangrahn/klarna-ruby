@@ -46,6 +46,17 @@ module Klarna
           end
         end
 
+        def check_order_status(id)
+          xmlrpc_params = [
+            ::Klarna::API::PROTOCOL_VERSION,
+            ::XMLRPC::Client::USER_AGENT,
+            self.store_id.to_i,
+            self.digest(id.to_s),
+            id.to_s,
+            0
+          ]
+          self.call(:check_order_status, *xmlrpc_params)
+        end
         # Activate purchases which have been previously reserved with the reserve_amount function.
         #
         def activate_reservation(params)
